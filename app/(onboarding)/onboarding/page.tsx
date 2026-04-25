@@ -1,9 +1,5 @@
-import { OnboardingWizard } from "@/modules/onboarding/components/OnboardingWizard";
+import { WorkspaceCreationScreen } from "@/modules/onboarding/components/WorkspaceCreationScreen";
 
 export default function OnboardingPage() {
-  return (
-    <main className="min-h-svh bg-background px-4 py-10">
-      <OnboardingWizard />
-    </main>
-  );
+  return <WorkspaceCreationScreen />;
 }
