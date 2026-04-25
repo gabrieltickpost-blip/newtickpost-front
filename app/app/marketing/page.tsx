@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
+import { MarketingHomePage } from "@/modules/marketing/components/MarketingHomePage";
 
 export default function AppMarketingPage() {
-  redirect("/campanhas");
+  return <MarketingHomePage />;
 }
