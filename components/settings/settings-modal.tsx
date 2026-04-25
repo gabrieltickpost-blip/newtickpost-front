@@ -2,12 +2,9 @@
 
 import {
   Bell,
-  BriefcaseBusiness,
   Building2,
-  CreditCard,
   HelpCircle,
-  Home,
-  Link2,
+  RadioTower,
   Shield,
   SlidersHorizontal,
   UserRound,
@@ -35,21 +32,18 @@ const sections = [
   {
     label: "Pessoal",
     items: [
-      { id: "home", label: "Home", icon: Home },
       { id: "account", label: "Conta", icon: UserRound },
       { id: "notifications", label: "Notificações", icon: Bell },
       { id: "security", label: "Segurança", icon: Shield },
     ],
   },
   {
-    label: "Espaço de trabalho",
+    label: "Configurações",
     items: [
+      { id: "channels", label: "Canais", icon: RadioTower },
       { id: "workspace", label: "Workspace", icon: Building2 },
-      { id: "crm", label: "CRM", icon: SlidersHorizontal },
-      { id: "brand", label: "Marca", icon: BriefcaseBusiness },
-      { id: "members", label: "Membros da equipe", icon: UsersRound },
-      { id: "integrations", label: "Integrações", icon: Link2 },
-      { id: "billing", label: "Billing", icon: CreditCard },
+      { id: "team", label: "Equipe", icon: UsersRound },
+      { id: "preferences", label: "Preferências", icon: SlidersHorizontal },
     ],
   },
   {
@@ -58,9 +52,60 @@ const sections = [
   },
 ];
 
-export function SettingsModal() {
+const sectionContent: Record<
+  string,
+  {
+    title: string;
+    description: string;
+    eyebrow: string;
+  }
+> = {
+  account: {
+    title: "Configurações de perfil",
+    description: "Atualize sua conta, foto e informações pessoais.",
+    eyebrow: "Gabriel Barbosa - Criação conteúdo · Owner",
+  },
+  notifications: {
+    title: "Notificações",
+    description: "Escolha quais alertas a TickPost deve enviar para sua rotina.",
+    eyebrow: "Preferências pessoais",
+  },
+  security: {
+    title: "Segurança",
+    description: "Gerencie senha, sessões e padrões de acesso da sua conta.",
+    eyebrow: "Conta protegida",
+  },
+  channels: {
+    title: "Canais",
+    description: "Organize os destinos de publicação usados pelo workspace.",
+    eyebrow: "Configurações do workspace",
+  },
+  workspace: {
+    title: "Workspace",
+    description: "Ajuste identidade, operação e padrões do espaço de trabalho.",
+    eyebrow: "Configurações do workspace",
+  },
+  team: {
+    title: "Equipe",
+    description: "Gerencie membros, convites e papéis da operação.",
+    eyebrow: "Configurações do workspace",
+  },
+  preferences: {
+    title: "Preferências",
+    description: "Defina tema, idioma, notificações e padrões operacionais.",
+    eyebrow: "Configurações do workspace",
+  },
+  support: {
+    title: "Suporte",
+    description: "Acesse ajuda, documentação e canais de atendimento.",
+    eyebrow: "Ajuda",
+  },
+};
+
+export function SettingsModal({ initialActive = "account" }: { initialActive?: string }) {
   const router = useRouter();
-  const [active, setActive] = useState("account");
+  const [active, setActive] = useState(initialActive);
+  const content = sectionContent[active] ?? sectionContent.account;
 
   return (
     <Dialog open onOpenChange={(open) => !open && router.back()}>
@@ -125,13 +170,13 @@ export function SettingsModal() {
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0">
                     <DialogTitle className="text-2xl tracking-[-0.04em] text-[#18181b] dark:text-white">
-                      Configurações de perfil
+                      {content.title}
                     </DialogTitle>
                     <DialogDescription className="mt-2 max-w-xl text-black/56 dark:text-white/52">
-                      Atualize sua conta, foto e informações pessoais.
+                      {content.description}
                     </DialogDescription>
                     <p className="mt-3 text-sm text-black/48 dark:text-white/42">
-                      Gabriel Barbosa - Criação conteudo · Owner
+                      {content.eyebrow}
                     </p>
                   </div>
                   <button
@@ -146,91 +191,215 @@ export function SettingsModal() {
             </div>
 
             <div className="p-5 md:p-7">
-              <div className="min-w-0 overflow-hidden rounded-2xl border border-black/8 bg-white/75 shadow-[0_1px_0_rgba(0,0,0,0.02)] backdrop-blur md:max-w-4xl dark:border-white/10 dark:bg-[#191919]">
-                <div className="border-b border-black/8 p-5 md:p-7 dark:border-white/10">
-                  <h3 className="text-xl font-semibold tracking-[-0.03em]">Conta</h3>
-                  <p className="mt-2 text-sm text-black/56 dark:text-white/50">
-                    Atualize suas informações pessoais e a foto do seu perfil na Tickpost.
-                  </p>
-                </div>
-
-                <div className="space-y-6 p-5 md:p-7">
-                  <div className="grid gap-5 md:grid-cols-[220px_minmax(0,1fr)]">
-                    <div>
-                      <p className="font-medium">Foto de perfil</p>
-                      <p className="mt-2 text-sm leading-5 text-black/52 dark:text-white/45">
-                        Esta imagem aparece em toda a sua área de trabalho.
-                      </p>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-4">
-                      <Avatar className="size-16">
-                        <AvatarFallback className="bg-[#FF6842] text-xl text-white">
-                          GB
-                        </AvatarFallback>
-                      </Avatar>
-                      <Button
-                        variant="outline"
-                        className="border-black/10 bg-white text-[#18181b] hover:bg-[#f7f4f1] hover:text-[#18181b] dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:hover:bg-white/[0.08] dark:hover:text-white"
-                      >
-                        Escolher foto
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        className="text-black/62 hover:bg-black/[0.05] hover:text-black dark:text-white/64 dark:hover:bg-white/[0.06] dark:hover:text-white"
-                      >
-                        Remover foto
-                      </Button>
-                    </div>
-                  </div>
-
-                  <SettingsRow label="Nome completo">
-                    <div className="grid gap-3 sm:grid-cols-2">
-                      <SettingsInput defaultValue="Tickpost" />
-                      <SettingsInput defaultValue="Empresa" />
-                    </div>
-                  </SettingsRow>
-
-                  <SettingsRow
-                    label="Endereço de email"
-                    hint="Use um email válido para manter alertas e acessos sincronizados."
-                  >
-                    <SettingsInput defaultValue="gabriel.tickpost@gmail.com" />
-                  </SettingsRow>
-
-                  <SettingsRow label="Telefone">
-                    <SettingsInput defaultValue="(32) 93618-9556" />
-                  </SettingsRow>
-
-                  <SettingsRow
-                    label="Bio"
-                    hint="Uma descrição curta ajuda a identificar melhor seu perfil dentro da operação."
-                    rightHint="20 caracteres"
-                  >
-                    <Textarea
-                      defaultValue="Bio QA 1777011611083"
-                      className="min-h-28 resize-none border-black/10 bg-white text-[#18181b] placeholder:text-black/30 focus-visible:border-[#3879FF] dark:border-white/10 dark:bg-white/[0.06] dark:text-white dark:placeholder:text-white/30"
-                    />
-                  </SettingsRow>
-                </div>
-
-                <div className="flex flex-wrap justify-end gap-3 border-t border-black/8 p-5 dark:border-white/10">
-                  <Button
-                    variant="ghost"
-                    onClick={() => router.back()}
-                    className="text-black/62 hover:bg-black/[0.05] hover:text-black dark:text-white/62 dark:hover:bg-white/[0.06] dark:hover:text-white"
-                  >
-                    Cancelar
-                  </Button>
-                  <Button className="bg-[#18181b] text-white hover:bg-black/85 dark:bg-white dark:text-black dark:hover:bg-white/90">
-                    Salvar alterações
-                  </Button>
-                </div>
-              </div>
+              <SettingsPanel active={active} onClose={() => router.back()} />
             </div>
           </section>
         </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function SettingsPanel({
+  active,
+  onClose,
+}: {
+  active: string;
+  onClose: () => void;
+}) {
+  if (active === "channels") {
+    return (
+      <SettingsCard title="Canais" description="Defina canais conectados e padrões de distribuição.">
+        <SettingsRow label="Canal principal" hint="Usado como destino padrão para novas publicações.">
+          <SettingsInput defaultValue="Instagram TickPost" />
+        </SettingsRow>
+        <SettingsRow label="Canais ativos">
+          <SettingsMockList items={["Instagram", "LinkedIn", "TikTok", "Email"]} />
+        </SettingsRow>
+        <SettingsRow label="Status de integração" hint="Mock pronto para futura conexão com backend.">
+          <SettingsInput defaultValue="Aguardando credenciais OAuth" />
+        </SettingsRow>
+        <SettingsActions onClose={onClose} />
+      </SettingsCard>
+    );
+  }
+
+  if (active === "workspace") {
+    return (
+      <SettingsCard title="Workspace" description="Organize a identidade e a operação do workspace.">
+        <SettingsRow label="Nome do workspace">
+          <SettingsInput defaultValue="Tickpost Marketing" />
+        </SettingsRow>
+        <SettingsRow label="Modelo de operação">
+          <SettingsInput defaultValue="Central de crescimento por conteúdo" />
+        </SettingsRow>
+        <SettingsRow label="Descrição">
+          <Textarea
+            defaultValue="Campanhas, conteúdos, canais e equipe organizados em um só espaço."
+            className="min-h-28 resize-none border-black/10 bg-white text-[#18181b] placeholder:text-black/30 focus-visible:border-[#3879FF] dark:border-white/10 dark:bg-white/[0.06] dark:text-white dark:placeholder:text-white/30"
+          />
+        </SettingsRow>
+        <SettingsActions onClose={onClose} />
+      </SettingsCard>
+    );
+  }
+
+  if (active === "team") {
+    return (
+      <SettingsCard title="Equipe" description="Membros, papéis e convites do workspace.">
+        <SettingsRow label="Owner">
+          <SettingsInput defaultValue="Gabriel Barbosa" />
+        </SettingsRow>
+        <SettingsRow label="Membros mockados">
+          <SettingsMockList items={["Gabriel Barbosa · Owner", "Marina Costa · Marketing", "Rafael Nunes · Conteúdo"]} />
+        </SettingsRow>
+        <SettingsRow label="Convites">
+          <SettingsInput defaultValue="2 convites pendentes" />
+        </SettingsRow>
+        <SettingsActions onClose={onClose} />
+      </SettingsCard>
+    );
+  }
+
+  if (active === "preferences") {
+    return (
+      <SettingsCard title="Preferências" description="Tema, idioma e padrões da experiência.">
+        <SettingsRow label="Tema padrão">
+          <SettingsInput defaultValue="Dark premium" />
+        </SettingsRow>
+        <SettingsRow label="Idioma">
+          <SettingsInput defaultValue="Português brasileiro" />
+        </SettingsRow>
+        <SettingsRow label="Padrão de conteúdo">
+          <SettingsInput defaultValue="Começar por campanha" />
+        </SettingsRow>
+        <SettingsActions onClose={onClose} />
+      </SettingsCard>
+    );
+  }
+
+  if (active !== "account") {
+    return (
+      <SettingsCard title="Em preparação" description="Esta área já está posicionada no modal de configurações.">
+        <SettingsRow label="Status">
+          <SettingsInput defaultValue="Mock pronto para integração" />
+        </SettingsRow>
+        <SettingsActions onClose={onClose} />
+      </SettingsCard>
+    );
+  }
+
+  return (
+    <SettingsCard title="Conta" description="Atualize suas informações pessoais e a foto do seu perfil na Tickpost.">
+      <div className="grid gap-5 md:grid-cols-[220px_minmax(0,1fr)]">
+        <div>
+          <p className="font-medium">Foto de perfil</p>
+          <p className="mt-2 text-sm leading-5 text-black/52 dark:text-white/45">
+            Esta imagem aparece em toda a sua área de trabalho.
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-4">
+          <Avatar className="size-16">
+            <AvatarFallback className="bg-[#FF6842] text-xl text-white">GB</AvatarFallback>
+          </Avatar>
+          <Button
+            variant="outline"
+            className="border-black/10 bg-white text-[#18181b] hover:bg-[#f7f4f1] hover:text-[#18181b] dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:hover:bg-white/[0.08] dark:hover:text-white"
+          >
+            Escolher foto
+          </Button>
+          <Button
+            variant="ghost"
+            className="text-black/62 hover:bg-black/[0.05] hover:text-black dark:text-white/64 dark:hover:bg-white/[0.06] dark:hover:text-white"
+          >
+            Remover foto
+          </Button>
+        </div>
+      </div>
+
+      <SettingsRow label="Nome completo">
+        <div className="grid gap-3 sm:grid-cols-2">
+          <SettingsInput defaultValue="Tickpost" />
+          <SettingsInput defaultValue="Empresa" />
+        </div>
+      </SettingsRow>
+
+      <SettingsRow
+        label="Endereço de email"
+        hint="Use um email válido para manter alertas e acessos sincronizados."
+      >
+        <SettingsInput defaultValue="gabriel.tickpost@gmail.com" />
+      </SettingsRow>
+
+      <SettingsRow label="Telefone">
+        <SettingsInput defaultValue="(32) 93618-9556" />
+      </SettingsRow>
+
+      <SettingsRow
+        label="Bio"
+        hint="Uma descrição curta ajuda a identificar melhor seu perfil dentro da operação."
+        rightHint="20 caracteres"
+      >
+        <Textarea
+          defaultValue="Bio QA 1777011611083"
+          className="min-h-28 resize-none border-black/10 bg-white text-[#18181b] placeholder:text-black/30 focus-visible:border-[#3879FF] dark:border-white/10 dark:bg-white/[0.06] dark:text-white dark:placeholder:text-white/30"
+        />
+      </SettingsRow>
+
+      <SettingsActions onClose={onClose} />
+    </SettingsCard>
+  );
+}
+
+function SettingsCard({
+  title,
+  description,
+  children,
+}: {
+  title: string;
+  description: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="min-w-0 overflow-hidden rounded-2xl border border-black/8 bg-white/75 shadow-[0_1px_0_rgba(0,0,0,0.02)] backdrop-blur md:max-w-4xl dark:border-white/10 dark:bg-[#191919]">
+      <div className="border-b border-black/8 p-5 md:p-7 dark:border-white/10">
+        <h3 className="text-xl font-semibold tracking-[-0.03em]">{title}</h3>
+        <p className="mt-2 text-sm text-black/56 dark:text-white/50">{description}</p>
+      </div>
+      <div className="space-y-6 p-5 md:p-7">{children}</div>
+    </div>
+  );
+}
+
+function SettingsActions({ onClose }: { onClose: () => void }) {
+  return (
+    <div className="flex flex-wrap justify-end gap-3 border-t border-black/8 pt-5 dark:border-white/10">
+      <Button
+        variant="ghost"
+        onClick={onClose}
+        className="text-black/62 hover:bg-black/[0.05] hover:text-black dark:text-white/62 dark:hover:bg-white/[0.06] dark:hover:text-white"
+      >
+        Cancelar
+      </Button>
+      <Button className="bg-[#18181b] text-white hover:bg-black/85 dark:bg-white dark:text-black dark:hover:bg-white/90">
+        Salvar alterações
+      </Button>
+    </div>
+  );
+}
+
+function SettingsMockList({ items }: { items: string[] }) {
+  return (
+    <div className="grid gap-2 sm:grid-cols-2">
+      {items.map((item) => (
+        <div
+          key={item}
+          className="rounded-lg border border-black/8 bg-white px-3 py-2 text-sm text-black/70 dark:border-white/10 dark:bg-white/[0.04] dark:text-white/70"
+        >
+          {item}
+        </div>
+      ))}
+    </div>
   );
 }
 
