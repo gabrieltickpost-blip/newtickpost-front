@@ -29,7 +29,7 @@ import {
 
 const secondaryNavItems = [
   { title: "Guia de crescimento", href: "#", icon: HelpCircle },
-  { title: "Configuracoes", href: "#", icon: Settings },
+  { title: "Configuracoes", href: "/configuracoes", icon: Settings },
 ];
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {

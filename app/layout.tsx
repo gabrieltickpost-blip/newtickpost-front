@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { AppProviders } from "@/app/providers";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -26,9 +25,7 @@ export default function RootLayout({
         className={`${inter.variable} antialiased`}
         suppressHydrationWarning
       >
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
-          <TooltipProvider>{children}</TooltipProvider>
-        </ThemeProvider>
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   );
