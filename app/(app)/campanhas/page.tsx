@@ -51,7 +51,7 @@ export default function CampaignsPage() {
       </div>
 
       <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
-        <Card className="rounded-lg border-border/70 bg-card/72 py-0">
+        <Card className="rounded-xl border bg-card py-0 shadow-sm">
           <CardHeader className="px-5 pt-5">
             <CardTitle>Conteudo gera conversa</CardTitle>
           </CardHeader>
@@ -67,7 +67,7 @@ export default function CampaignsPage() {
         </div>
       </div>
 
-      <Card className="rounded-lg border-border/70 bg-card/72 py-0">
+      <Card className="rounded-xl border bg-card py-0 shadow-sm">
         <CardHeader className="px-5 pt-5">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>

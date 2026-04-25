@@ -21,7 +21,7 @@ export default function AnalyticsPage() {
         <StatCard label="Vendas atribuidas" value="49" helper="R$ 186k em pipeline" icon={ShoppingBag} />
       </div>
 
-      <Card className="rounded-lg border-border/70 bg-card/72 py-0">
+      <Card className="rounded-xl border bg-card py-0 shadow-sm">
         <CardHeader className="px-5 pt-5">
           <CardTitle>Funil de crescimento por conteudo</CardTitle>
         </CardHeader>

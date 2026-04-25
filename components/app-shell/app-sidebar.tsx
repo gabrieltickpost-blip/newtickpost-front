@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown, HelpCircle, Plus, Search, Settings } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -40,25 +39,19 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   );
 
   return (
-    <Sidebar collapsible="offcanvas" className="!border-r-0" {...props}>
-      <SidebarHeader className="px-3 py-4">
+    <Sidebar collapsible="offcanvas" className="!border-r" {...props}>
+      <SidebarHeader className="px-3 py-3">
         <div className="flex items-center justify-between gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger className="flex w-full items-center gap-2 outline-none">
-              <span className="flex size-9 shrink-0 items-center justify-start overflow-hidden rounded-md bg-white px-1.5">
-                <Image
-                  src="/logo.svg"
-                  alt="Tickpost"
-                  width={132}
-                  height={24}
-                  className="h-6 w-[132px] max-w-none"
-                />
+              <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-primary text-base font-semibold text-primary-foreground">
+                T
               </span>
               <div className="min-w-0 text-left">
-                <div className="truncate text-sm font-medium">
+                <div className="truncate text-sm font-semibold tracking-[-0.01em]">
                   Tickpost
                 </div>
-                <div className="truncate text-xs text-muted-foreground">
+                <div className="truncate text-xs font-medium text-muted-foreground">
                   Marketing
                 </div>
               </div>
@@ -78,7 +71,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
             <Search className="size-3.5" />
           </Button>
         </div>
-        <Button className="mt-4 w-full justify-start">
+        <Button className="mt-3 w-full justify-start rounded-lg bg-primary shadow-none hover:bg-primary/90">
           <Plus className="size-4" />
           Criar campanha
         </Button>
@@ -86,7 +79,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
 
       <SidebarContent className="px-2">
         <SidebarGroup className="p-0">
-          <SidebarGroupLabel className="px-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          <SidebarGroupLabel className="px-2 text-xs font-semibold tracking-[-0.01em] text-muted-foreground">
             Marketing OS
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -99,7 +92,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                       pathname === module.href ||
                       pathname?.startsWith(`${module.href}/`)
                     }
-                    className="h-10"
+                    className="h-10 rounded-lg"
                   >
                     <Link href={module.href}>
                       <module.icon className="size-4 shrink-0" />
@@ -132,11 +125,11 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
           ))}
         </SidebarMenu>
 
-        <div className="rounded-lg border bg-background/70 p-4 text-sm group-data-[collapsible=icon]:hidden">
-          <div className="text-lg font-semibold leading-tight">
+        <div className="rounded-xl border bg-background p-4 text-sm shadow-sm group-data-[collapsible=icon]:hidden">
+          <div className="text-base font-semibold leading-tight tracking-[-0.01em]">
             Conteudo gera conversa.
           </div>
-          <p className="mt-2 text-muted-foreground">
+          <p className="mt-2 text-sm leading-5 text-muted-foreground">
             Conversa gera lead. Lead gera venda. Comece sempre por uma campanha.
           </p>
         </div>

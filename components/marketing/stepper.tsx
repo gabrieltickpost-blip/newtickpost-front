@@ -10,15 +10,15 @@ export function Stepper({ steps }: { steps: GrowthStep[] }) {
         <div
           key={step.title}
           className={cn(
-            "rounded-lg border bg-card/62 p-4",
-            step.status === "current" && "border-primary/50 bg-primary/10"
+            "rounded-xl border bg-card p-4 shadow-sm",
+            step.status === "current" && "border-primary/40 bg-primary/8"
           )}
         >
           <div className="flex items-center gap-3">
             <span
               className={cn(
                 "grid size-7 place-items-center rounded-md border text-xs font-semibold",
-                step.status === "done" && "border-emerald-400/30 bg-emerald-400/10 text-emerald-300",
+                step.status === "done" && "border-[#38C3DB]/30 bg-[#38C3DB]/10 text-[#13798A]",
                 step.status === "current" && "border-primary/40 bg-primary text-primary-foreground",
                 step.status === "next" && "border-border text-muted-foreground"
               )}

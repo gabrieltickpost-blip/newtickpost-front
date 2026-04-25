@@ -38,7 +38,7 @@ export default function ChannelsPage() {
             <StatusBadge key={`${channel.id}-status`} status={channel.status} />,
             channel.audience,
             channel.nextPost,
-            <span key={`${channel.id}-conversion`} className="font-medium text-emerald-300">
+            <span key={`${channel.id}-conversion`} className="font-medium text-[#3240AA]">
               {channel.conversionRate}
             </span>,
           ])}

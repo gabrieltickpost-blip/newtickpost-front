@@ -8,8 +8,8 @@ export const marketingTokens = {
     section: "1.25rem",
   },
   tone: {
-    success: "text-emerald-300 bg-emerald-400/10 border-emerald-400/20",
-    warning: "text-amber-300 bg-amber-400/10 border-amber-400/20",
-    info: "text-sky-300 bg-sky-400/10 border-sky-400/20",
+    success: "text-[#13798A] bg-[#38C3DB]/10 border-[#38C3DB]/25",
+    warning: "text-[#C94728] bg-[#FF6842]/10 border-[#FF6842]/25",
+    info: "text-[#3240AA] bg-[#3879FF]/10 border-[#3879FF]/20",
   },
 } as const;

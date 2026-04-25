@@ -17,7 +17,7 @@ export function SimpleDataTable({
   rows: ReactNode[][];
 }) {
   return (
-    <div className="overflow-hidden rounded-lg border bg-card/62">
+    <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent">

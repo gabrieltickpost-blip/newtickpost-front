@@ -23,28 +23,28 @@ export function GrowthChart() {
               <stop offset="95%" stopColor="#ff5a52" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid stroke="rgba(255,255,255,0.08)" vertical={false} />
-          <XAxis dataKey="label" tickLine={false} axisLine={false} tick={{ fill: "#9ca3af", fontSize: 12 }} />
-          <YAxis tickLine={false} axisLine={false} tick={{ fill: "#9ca3af", fontSize: 12 }} />
+          <CartesianGrid stroke="rgba(0,0,0,0.08)" vertical={false} />
+          <XAxis dataKey="label" tickLine={false} axisLine={false} tick={{ fill: "#6f7278", fontSize: 12 }} />
+          <YAxis tickLine={false} axisLine={false} tick={{ fill: "#6f7278", fontSize: 12 }} />
           <Tooltip
             contentStyle={{
-              background: "#141b29",
-              border: "1px solid rgba(255,255,255,0.12)",
+              background: "#ffffff",
+              border: "1px solid #e8e8eb",
               borderRadius: 8,
-              color: "#fff",
+              color: "#242428",
             }}
           />
           <Area
             type="monotone"
             dataKey="conversations"
-            stroke="#ff5a52"
+            stroke="#ff6842"
             fill="url(#conversations)"
             strokeWidth={2}
           />
           <Area
             type="monotone"
             dataKey="leads"
-            stroke="#29d3c2"
+            stroke="#3879ff"
             fill="transparent"
             strokeWidth={2}
           />

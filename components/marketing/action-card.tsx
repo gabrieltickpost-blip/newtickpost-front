@@ -8,7 +8,7 @@ export function ActionCard({ item }: { item: ActionCardItem }) {
   const Icon = item.icon;
 
   return (
-    <Card className="rounded-lg border-border/70 bg-card/70 py-0 transition-colors hover:bg-card">
+    <Card className="rounded-xl border bg-card py-0 shadow-sm transition-colors hover:bg-secondary/50">
       <CardContent className="space-y-4 p-5">
         <span className="grid size-10 place-items-center rounded-md bg-primary/12 text-primary">
           <Icon className="size-5" />
