@@ -7,6 +7,7 @@ import {
   Building2,
   Check,
   ChevronLeft,
+  Palette,
   FileText,
   Target,
 } from "lucide-react";
@@ -40,7 +41,15 @@ const mainGoals = [
   "crescer autoridade",
 ];
 
-const stepLabels = ["Workspace", "Volume", "Objetivo"];
+const toneOptions = [
+  "educativo",
+  "direto",
+  "premium",
+  "descontraído",
+  "inspirador",
+];
+
+const stepLabels = ["Workspace", "Volume", "Objetivo", "Marca"];
 
 export function WorkspaceCreationScreen() {
   const router = useRouter();
@@ -49,13 +58,17 @@ export function WorkspaceCreationScreen() {
   const [operationType, setOperationType] = useState("");
   const [monthlyContent, setMonthlyContent] = useState("");
   const [mainGoal, setMainGoal] = useState("");
+  const [brandName, setBrandName] = useState("");
+  const [toneOfVoice, setToneOfVoice] = useState("");
 
   const canContinue =
     step === 0
       ? workspaceName.trim().length > 2 && Boolean(operationType)
       : step === 1
         ? Boolean(monthlyContent)
-        : Boolean(mainGoal);
+        : step === 2
+          ? Boolean(mainGoal)
+          : brandName.trim().length > 2 && Boolean(toneOfVoice);
 
   function persistDraft() {
     window.localStorage.setItem(
@@ -65,6 +78,8 @@ export function WorkspaceCreationScreen() {
         operationType,
         monthlyContent,
         mainGoal,
+        brandName,
+        toneOfVoice,
       }),
     );
   }
@@ -81,7 +96,7 @@ export function WorkspaceCreationScreen() {
       return;
     }
 
-    router.push("/onboarding/brand");
+    router.push("/app/marketing");
   }
 
   return (
@@ -160,6 +175,28 @@ export function WorkspaceCreationScreen() {
               />
             ) : null}
 
+            {step === 3 ? (
+              <div className="space-y-6">
+                <Field label="Nome da marca" required>
+                  <Input
+                    value={brandName}
+                    onChange={(event) => setBrandName(event.target.value)}
+                    placeholder="ex.: TickPost"
+                    autoComplete="organization"
+                    className="h-12 rounded-md border-[#d8d8dc] bg-white text-base shadow-none placeholder:text-[#a0a6b2] focus-visible:border-[#3879FF]"
+                  />
+                </Field>
+
+                <OptionGroup
+                  icon={Palette}
+                  title="Tom de voz"
+                  options={toneOptions}
+                  value={toneOfVoice}
+                  onChange={setToneOfVoice}
+                />
+              </div>
+            ) : null}
+
             <div className="mt-10 flex items-center gap-3">
               {step > 0 ? (
                 <Button
@@ -177,7 +214,7 @@ export function WorkspaceCreationScreen() {
                 onClick={handleContinue}
                 className="h-12 rounded-md bg-[#242428] px-6 text-base text-white hover:bg-black disabled:bg-[#f5f2f0] disabled:text-[#a0a6b2] disabled:opacity-100"
               >
-                Continuar
+                {step === stepLabels.length - 1 ? "Finalizar" : "Continuar"}
                 <ArrowRight className="size-4" />
               </Button>
             </div>
