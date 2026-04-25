@@ -6,6 +6,7 @@ import { currentWorkspaceUser } from "@/lib/auth/permissions";
 import { getModuleByPathname } from "@/lib/navigation";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function AppHeader() {
   const pathname = usePathname();
@@ -37,6 +38,7 @@ export function AppHeader() {
         <span className="hidden rounded-md bg-secondary px-2.5 py-1 text-xs font-medium text-muted-foreground sm:inline-flex">
           {currentWorkspaceUser.role}
         </span>
+        <ThemeToggle />
       </div>
     </header>
   );

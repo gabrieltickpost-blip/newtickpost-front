@@ -78,6 +78,35 @@
   --sidebar-ring: #3879ff;
 }
 
+.dark {
+  --background: #060607;
+  --foreground: #f5f2f0;
+  --card: #171717;
+  --card-foreground: #f5f2f0;
+  --popover: #171717;
+  --popover-foreground: #f5f2f0;
+  --primary: #ff6842;
+  --primary-foreground: #ffffff;
+  --secondary: #202020;
+  --secondary-foreground: #f5f2f0;
+  --muted: #202020;
+  --muted-foreground: #a1a1aa;
+  --accent: #38c3db;
+  --accent-foreground: #000000;
+  --destructive: #ff6842;
+  --border: rgb(255 255 255 / 10%);
+  --input: rgb(255 255 255 / 14%);
+  --ring: #3879ff;
+  --sidebar: #111111;
+  --sidebar-foreground: #f5f2f0;
+  --sidebar-primary: #ff6842;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #202020;
+  --sidebar-accent-foreground: #f5f2f0;
+  --sidebar-border: rgb(255 255 255 / 10%);
+  --sidebar-ring: #3879ff;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
