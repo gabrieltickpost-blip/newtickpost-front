@@ -1,0 +1,27 @@
+<svg width="1200" height="1600" viewBox="0 0 1200 1600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="1600" fill="#0C8EF4"/>
+  <rect width="1200" height="1600" fill="url(#sky)"/>
+  <g filter="url(#cloudBlur)" opacity="0.92">
+    <path d="M-103 388C30 254 240 275 337 386C411 322 548 307 641 371C731 433 756 547 700 638C837 635 953 714 976 825C1007 972 880 1100 718 1088H-103V388Z" fill="white"/>
+    <path d="M463 1037C563 918 757 880 890 962C961 1006 1001 1071 1011 1140C1114 1130 1217 1198 1249 1300C1297 1453 1169 1587 1005 1574H463V1037Z" fill="white" fill-opacity="0.82"/>
+    <path d="M-80 1057C22 951 183 960 277 1047C345 1000 464 1005 529 1072C602 1146 587 1263 503 1325H-80V1057Z" fill="white" fill-opacity="0.75"/>
+    <path d="M804 167C929 62 1121 88 1208 198V597C1126 633 1014 616 951 542C875 578 769 553 718 481C642 374 689 263 804 167Z" fill="white" fill-opacity="0.6"/>
+  </g>
+  <g opacity="0.24" filter="url(#soft)">
+    <circle cx="252" cy="1191" r="316" fill="#38C3DB"/>
+    <circle cx="911" cy="326" r="260" fill="#38C3DB"/>
+  </g>
+  <defs>
+    <linearGradient id="sky" x1="102" y1="74" x2="1058" y2="1535" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0697FF"/>
+      <stop offset="0.48" stop-color="#0B8CF0"/>
+      <stop offset="1" stop-color="#0A6FE5"/>
+    </linearGradient>
+    <filter id="cloudBlur" x="-190" y="-20" width="1545" height="1700" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="28"/>
+    </filter>
+    <filter id="soft" x="-160" y="-160" width="1520" height="1920" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="80"/>
+    </filter>
+  </defs>
+</svg>

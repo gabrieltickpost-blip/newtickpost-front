@@ -1,7 +1,15 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Building2, Check, FileText, Target } from "lucide-react";
+import {
+  ArrowRight,
+  Building2,
+  Check,
+  ChevronLeft,
+  FileText,
+  Target,
+} from "lucide-react";
 import { useState } from "react";
 
 import { TickpostLogo } from "@/components/brand/tickpost-logo";
@@ -32,24 +40,24 @@ const mainGoals = [
   "crescer autoridade",
 ];
 
+const stepLabels = ["Workspace", "Volume", "Objetivo"];
+
 export function WorkspaceCreationScreen() {
   const router = useRouter();
+  const [step, setStep] = useState(0);
   const [workspaceName, setWorkspaceName] = useState("");
   const [operationType, setOperationType] = useState("");
   const [monthlyContent, setMonthlyContent] = useState("");
   const [mainGoal, setMainGoal] = useState("");
 
   const canContinue =
-    workspaceName.trim().length > 2 &&
-    Boolean(operationType) &&
-    Boolean(monthlyContent) &&
-    Boolean(mainGoal);
+    step === 0
+      ? workspaceName.trim().length > 2 && Boolean(operationType)
+      : step === 1
+        ? Boolean(monthlyContent)
+        : Boolean(mainGoal);
 
-  function handleContinue() {
-    if (!canContinue) {
-      return;
-    }
-
+  function persistDraft() {
     window.localStorage.setItem(
       "tickpost.workspaceDraft",
       JSON.stringify({
@@ -59,105 +67,158 @@ export function WorkspaceCreationScreen() {
         mainGoal,
       }),
     );
+  }
+
+  function handleContinue() {
+    if (!canContinue) {
+      return;
+    }
+
+    persistDraft();
+
+    if (step < stepLabels.length - 1) {
+      setStep((current) => current + 1);
+      return;
+    }
 
     router.push("/onboarding/brand");
   }
 
   return (
-    <main className="min-h-svh overflow-hidden bg-[#060607] px-5 py-8 text-white">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(56,121,255,0.22),transparent_32rem),radial-gradient(circle_at_82%_78%,rgba(255,104,66,0.18),transparent_28rem)]" />
-      <div className="relative mx-auto flex min-h-[calc(100svh-4rem)] w-full max-w-5xl flex-col">
-        <header className="flex items-center justify-between gap-4">
-          <TickpostLogo className="h-9" />
-          <div className="text-right text-xs text-white/46">
-            <span className="block font-medium text-white/70">Etapa 1 de 2</span>
-            Workspace
-          </div>
-        </header>
+    <main className="min-h-svh bg-[#6f6f6f] px-4 py-6 text-[#242428] sm:px-6 sm:py-8">
+      <section className="mx-auto grid min-h-[calc(100svh-3rem)] w-full max-w-6xl overflow-hidden rounded-[1.6rem] bg-white shadow-[0_24px_70px_rgba(0,0,0,0.28)] md:grid-cols-[0.62fr_1fr]">
+        <div className="relative hidden min-h-[760px] overflow-hidden md:block">
+          <Image
+            src="/onboarding-sky.svg"
+            alt=""
+            fill
+            priority
+            sizes="(min-width: 768px) 40vw, 100vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0A6FE5]/20 via-transparent to-white/5" />
+        </div>
 
-        <section className="flex flex-1 items-center justify-center py-10">
-          <div className="w-full max-w-3xl">
-            <div className="mb-5 h-1.5 overflow-hidden rounded-full bg-white/10">
-              <div className="h-full w-1/2 rounded-full bg-[#FF6842]" />
+        <div className="flex min-h-[720px] flex-col px-6 py-8 sm:px-10 lg:px-16 lg:py-14">
+          <div className="mb-12 flex items-center justify-between">
+            <TickpostLogo className="h-10" />
+            <span className="rounded-full bg-[#f5f2f0] px-3 py-1 text-xs font-medium text-[#6f7278]">
+              {step + 1}/{stepLabels.length}
+            </span>
+          </div>
+
+          <div className="max-w-2xl">
+            <div className="mb-10">
+              <h1 className="text-4xl font-semibold tracking-[-0.04em] text-[#242428]">
+                Crie seu workspace
+              </h1>
+              <p className="mt-3 text-base leading-7 text-[#5f6269]">
+                Esse será o espaço onde você vai organizar campanhas, conteúdos, canais e equipe.
+              </p>
             </div>
 
-            <div className="overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.06] shadow-2xl backdrop-blur">
-              <div className="border-b border-white/10 p-6 sm:p-8">
-                <div className="flex items-start gap-4">
-                  <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-[#FF6842] text-white">
-                    <Building2 className="size-5" />
-                  </span>
-                  <div>
-                    <h1 className="text-3xl font-semibold tracking-[-0.04em]">
-                      Crie seu workspace
-                    </h1>
-                    <p className="mt-2 max-w-2xl text-sm leading-6 text-white/58">
-                      Esse será o espaço onde você vai organizar campanhas, conteúdos, canais e equipe.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-7 p-6 sm:p-8">
-                <div className="space-y-2">
-                  <label htmlFor="workspace-name" className="text-sm font-medium text-white/78">
-                    Nome do workspace
-                  </label>
+            {step === 0 ? (
+              <div className="space-y-6">
+                <Field label="Nome do workspace" required>
                   <Input
-                    id="workspace-name"
                     value={workspaceName}
                     onChange={(event) => setWorkspaceName(event.target.value)}
-                    placeholder="Ex: TickPost Marketing"
+                    placeholder="ex.: TickPost Marketing"
                     autoComplete="organization"
-                    className="h-12 border-white/10 bg-white/[0.07] text-white placeholder:text-white/32 focus-visible:border-[#3879FF]"
+                    className="h-12 rounded-md border-[#d8d8dc] bg-white text-base shadow-none placeholder:text-[#a0a6b2] focus-visible:border-[#3879FF]"
                   />
-                </div>
+                </Field>
 
                 <OptionGroup
-                  icon={Target}
+                  icon={Building2}
                   title="Tipo de operação"
                   options={operationTypes}
                   value={operationType}
                   onChange={setOperationType}
                 />
-
-                <OptionGroup
-                  icon={FileText}
-                  title="Quantidade aproximada de conteúdos por mês"
-                  options={monthlyContentOptions}
-                  value={monthlyContent}
-                  onChange={setMonthlyContent}
-                  compact
-                />
-
-                <OptionGroup
-                  icon={Check}
-                  title="Principal objetivo"
-                  options={mainGoals}
-                  value={mainGoal}
-                  onChange={setMainGoal}
-                />
               </div>
+            ) : null}
 
-              <div className="flex flex-col gap-3 border-t border-white/10 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
-                <p className="text-sm leading-6 text-white/46">
-                  Depois disso, vamos configurar a identidade da marca.
-                </p>
+            {step === 1 ? (
+              <OptionGroup
+                icon={FileText}
+                title="Quantidade aproximada de conteúdos por mês"
+                options={monthlyContentOptions}
+                value={monthlyContent}
+                onChange={setMonthlyContent}
+                roomy
+              />
+            ) : null}
+
+            {step === 2 ? (
+              <OptionGroup
+                icon={Target}
+                title="Principal objetivo"
+                options={mainGoals}
+                value={mainGoal}
+                onChange={setMainGoal}
+              />
+            ) : null}
+
+            <div className="mt-10 flex items-center gap-3">
+              {step > 0 ? (
                 <Button
                   type="button"
-                  disabled={!canContinue}
-                  onClick={handleContinue}
-                  className="h-11 bg-[#FF6842] px-5 text-white hover:bg-[#ff7857] disabled:bg-white/10 disabled:text-white/36 disabled:opacity-100"
+                  variant="outline"
+                  onClick={() => setStep((current) => current - 1)}
+                  className="h-12 rounded-md border-[#d8d8dc] bg-white px-4 text-[#242428] hover:bg-[#f5f2f0]"
                 >
-                  Continuar
-                  <ArrowRight className="size-4" />
+                  <ChevronLeft className="size-4" />
                 </Button>
-              </div>
+              ) : null}
+              <Button
+                type="button"
+                disabled={!canContinue}
+                onClick={handleContinue}
+                className="h-12 rounded-md bg-[#242428] px-6 text-base text-white hover:bg-black disabled:bg-[#f5f2f0] disabled:text-[#a0a6b2] disabled:opacity-100"
+              >
+                Continuar
+                <ArrowRight className="size-4" />
+              </Button>
             </div>
           </div>
-        </section>
-      </div>
+
+          <div className="mt-auto flex justify-center gap-3 pt-10">
+            {stepLabels.map((label, index) => (
+              <button
+                key={label}
+                type="button"
+                onClick={() => setStep(index)}
+                aria-label={label}
+                className={cn(
+                  "h-1.5 rounded-full transition-all",
+                  index === step ? "w-10 bg-[#144BFF]" : "w-10 bg-[#e8e8eb]",
+                )}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
     </main>
+  );
+}
+
+function Field({
+  label,
+  required,
+  children,
+}: {
+  label: string;
+  required?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <label className="block space-y-2">
+      <span className="text-sm font-semibold text-[#5f6269]">
+        {label} {required ? "*" : null}
+      </span>
+      {children}
+    </label>
   );
 }
 
@@ -167,22 +228,22 @@ function OptionGroup({
   options,
   value,
   onChange,
-  compact = false,
+  roomy = false,
 }: {
   icon: React.ComponentType<{ className?: string }>;
   title: string;
   options: string[];
   value: string;
   onChange: (value: string) => void;
-  compact?: boolean;
+  roomy?: boolean;
 }) {
   return (
-    <div className="space-y-3">
-      <div className="flex items-center gap-2 text-sm font-medium text-white/78">
-        <Icon className="size-4 text-[#38C3DB]" />
+    <div className="space-y-4">
+      <div className="flex items-center gap-2 text-sm font-semibold text-[#5f6269]">
+        <Icon className="size-4 text-[#144BFF]" />
         {title}
       </div>
-      <div className={cn("grid gap-2", compact ? "sm:grid-cols-4" : "sm:grid-cols-2")}>
+      <div className={cn("grid gap-3", roomy ? "sm:grid-cols-2" : "sm:grid-cols-2")}>
         {options.map((option) => {
           const selected = value === option;
 
@@ -192,14 +253,14 @@ function OptionGroup({
               type="button"
               onClick={() => onChange(option)}
               className={cn(
-                "flex min-h-11 items-center justify-between gap-3 rounded-xl border px-3 py-2 text-left text-sm font-medium transition",
+                "flex min-h-12 items-center justify-between gap-3 rounded-lg border px-4 py-3 text-left text-sm font-semibold transition",
                 selected
-                  ? "border-[#FF6842]/65 bg-[#FF6842]/14 text-white shadow-[0_0_0_1px_rgba(255,104,66,0.16)]"
-                  : "border-white/10 bg-black/18 text-white/62 hover:border-white/18 hover:bg-white/[0.06] hover:text-white",
+                  ? "border-[#144BFF] bg-[#144BFF]/8 text-[#242428] shadow-[0_0_0_1px_rgba(20,75,255,0.12)]"
+                  : "border-[#e1e3e8] bg-white text-[#5f6269] hover:border-[#bfc4d1] hover:bg-[#f8f8f9]",
               )}
             >
               <span>{option}</span>
-              {selected ? <Check className="size-4 shrink-0 text-[#FF6842]" /> : null}
+              {selected ? <Check className="size-4 shrink-0 text-[#144BFF]" /> : null}
             </button>
           );
         })}
