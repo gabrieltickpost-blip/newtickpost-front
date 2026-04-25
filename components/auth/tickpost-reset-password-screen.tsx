@@ -6,62 +6,56 @@ import { motion } from "framer-motion";
 import {
   AlertCircle,
   CheckCircle2,
-  Chrome,
   Eye,
   EyeOff,
+  KeyRound,
   Loader2,
   LockKeyhole,
-  Mail,
+  ShieldCheck,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 
 type FormErrors = {
-  email?: string;
   password?: string;
-  credentials?: string;
+  confirmPassword?: string;
 };
 
-const rightCards = [
-  "Campanha criada",
-  "20 conteúdos gerados",
-  "8 posts agendados",
-  "14 conversas geradas",
-  "5 leads identificados",
+const securityCards = [
+  "Senha forte",
+  "Sessão protegida",
+  "Workspace seguro",
 ];
 
-export function TickpostLoginScreen() {
+export function TickpostResetPasswordScreen({
+  isExpired = false,
+}: {
+  isExpired?: boolean;
+}) {
   const router = useRouter();
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [remember, setRemember] = useState(true);
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
-
-  const isValidEmail = useMemo(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email), [email]);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const nextErrors: FormErrors = {};
 
-    if (!email) {
-      nextErrors.email = "Informe seu e-mail.";
-    } else if (!isValidEmail) {
-      nextErrors.email = "Use um e-mail válido.";
-    }
-
     if (!password) {
-      nextErrors.password = "Informe sua senha.";
+      nextErrors.password = "Informe uma nova senha.";
     } else if (password.length < 8) {
       nextErrors.password = "A senha precisa ter pelo menos 8 caracteres.";
     }
 
-    if (email === "erro@tickpost.com") {
-      nextErrors.credentials = "E-mail ou senha incorretos.";
+    if (!confirmPassword) {
+      nextErrors.confirmPassword = "Confirme sua nova senha.";
+    } else if (confirmPassword !== password) {
+      nextErrors.confirmPassword = "As senhas precisam ser iguais.";
     }
 
     setErrors(nextErrors);
@@ -72,7 +66,7 @@ export function TickpostLoginScreen() {
 
     setIsLoading(true);
     await new Promise((resolve) => window.setTimeout(resolve, 850));
-    router.push("/app/marketing");
+    router.push("/login");
   }
 
   return (
@@ -97,54 +91,41 @@ export function TickpostLoginScreen() {
 
             <div className="mt-12 space-y-3">
               <h1 className="text-4xl font-semibold tracking-[-0.05em]">
-                Entre na sua central de conteúdo
+                Crie uma nova senha
               </h1>
               <p className="text-sm leading-6 text-black/58 dark:text-white/58">
-                Crie campanhas, organize conteúdos e transforme posts em conversas.
+                Escolha uma senha segura para voltar ao seu workspace.
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-              {errors.credentials ? (
-                <div className="flex items-center gap-2 rounded-xl border border-[#FF6842]/30 bg-[#FF6842]/10 px-3 py-2 text-sm text-[#c15a3d] dark:text-[#FFB3A0]">
-                  <AlertCircle className="size-4" />
-                  {errors.credentials}
+            {isExpired ? (
+              <div className="mt-8 rounded-2xl border border-[#FF6842]/30 bg-[#FF6842]/10 p-5">
+                <div className="flex items-start gap-3">
+                  <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#FF6842] text-white">
+                    <AlertCircle className="size-5" />
+                  </span>
+                  <div>
+                    <h2 className="font-semibold">Token expirado</h2>
+                    <p className="mt-1 text-sm leading-6 text-black/58 dark:text-white/58">
+                      Esse link não está mais válido. Solicite um novo link de recuperação.
+                    </p>
+                  </div>
                 </div>
-              ) : null}
-
-              <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-medium text-black/80 dark:text-white/80">
-                  E-mail
-                </label>
-                <div className="relative">
-                  <Mail className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-black/35 dark:text-white/35" />
-                  <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                    placeholder="voce@empresa.com"
-                    autoComplete="email"
-                    aria-invalid={Boolean(errors.email)}
-                    className="h-11 border-black/10 bg-white pl-10 text-[#18181b] placeholder:text-black/32 focus-visible:border-[#3879FF] dark:border-white/10 dark:bg-white/[0.06] dark:text-white dark:placeholder:text-white/32"
-                  />
-                </div>
-                {errors.email ? <p className="text-xs text-[#c15a3d] dark:text-[#FFB3A0]">{errors.email}</p> : null}
+                <Button className="mt-5 h-11 w-full bg-[#FF6842] text-white hover:bg-[#ff7857]" asChild>
+                  <Link href="/recuperar-senha">Enviar novo link</Link>
+                </Button>
               </div>
-
-              <div className="space-y-2">
-                <label htmlFor="password" className="text-sm font-medium text-black/80 dark:text-white/80">
-                  Senha
-                </label>
-                <div className="relative">
+            ) : (
+              <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+                <Field label="Nova senha" htmlFor="new-password" error={errors.password}>
                   <LockKeyhole className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-black/35 dark:text-white/35" />
                   <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
+                    id="new-password"
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
-                    placeholder="Digite sua senha"
-                    autoComplete="current-password"
+                    placeholder="Mínimo 8 caracteres"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="new-password"
                     aria-invalid={Boolean(errors.password)}
                     className="h-11 border-black/10 bg-white px-10 text-[#18181b] placeholder:text-black/32 focus-visible:border-[#3879FF] dark:border-white/10 dark:bg-white/[0.06] dark:text-white dark:placeholder:text-white/32"
                   />
@@ -156,52 +137,40 @@ export function TickpostLoginScreen() {
                   >
                     {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                   </button>
-                </div>
-                {errors.password ? <p className="text-xs text-[#c15a3d] dark:text-[#FFB3A0]">{errors.password}</p> : null}
-              </div>
+                </Field>
 
-              <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
-                <label className="flex items-center gap-2 text-black/58 dark:text-white/58">
-                  <Checkbox
-                    checked={remember}
-                    onCheckedChange={(value) => setRemember(Boolean(value))}
-                    className="border-black/20 bg-white dark:border-white/20 dark:bg-white/[0.06]"
+                <Field label="Confirmar senha" htmlFor="confirm-password" error={errors.confirmPassword}>
+                  <LockKeyhole className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-black/35 dark:text-white/35" />
+                  <Input
+                    id="confirm-password"
+                    value={confirmPassword}
+                    onChange={(event) => setConfirmPassword(event.target.value)}
+                    placeholder="Repita a nova senha"
+                    type={showConfirmPassword ? "text" : "password"}
+                    autoComplete="new-password"
+                    aria-invalid={Boolean(errors.confirmPassword)}
+                    className="h-11 border-black/10 bg-white px-10 text-[#18181b] placeholder:text-black/32 focus-visible:border-[#3879FF] dark:border-white/10 dark:bg-white/[0.06] dark:text-white dark:placeholder:text-white/32"
                   />
-                  Lembrar de mim
-                </label>
-                <Link
-                  href="/recuperar-senha"
-                  className="font-medium text-[#18181b] underline-offset-4 hover:underline dark:text-white"
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword((value) => !value)}
+                    className="absolute top-1/2 right-3 -translate-y-1/2 text-black/38 transition hover:text-black dark:text-white/40 dark:hover:text-white"
+                    aria-label={showConfirmPassword ? "Ocultar confirmação de senha" : "Mostrar confirmação de senha"}
+                  >
+                    {showConfirmPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                  </button>
+                </Field>
+
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="h-11 w-full bg-[#FF6842] text-white hover:bg-[#ff7857]"
                 >
-                  Esqueci minha senha
-                </Link>
-              </div>
-
-              <Button
-                type="submit"
-                disabled={isLoading}
-                className="h-11 w-full bg-[#FF6842] text-white hover:bg-[#ff7857]"
-              >
-                {isLoading ? <Loader2 className="size-4 animate-spin" /> : null}
-                Entrar
-              </Button>
-
-              <Button
-                type="button"
-                variant="outline"
-                className="h-11 w-full border-black/10 bg-white text-[#18181b] hover:bg-[#ede9e6] hover:text-[#18181b] dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:hover:bg-white/[0.08] dark:hover:text-white"
-              >
-                <Chrome className="size-4" />
-                Entrar com Google
-              </Button>
-            </form>
-
-            <p className="mt-6 text-center text-sm text-black/50 dark:text-white/50">
-              Ainda não tem acesso?{" "}
-              <Link href="/cadastro" className="font-medium text-[#18181b] underline-offset-4 hover:underline dark:text-white">
-                Criar conta
-              </Link>
-            </p>
+                  {isLoading ? <Loader2 className="size-4 animate-spin" /> : <CheckCircle2 className="size-4" />}
+                  Salvar nova senha
+                </Button>
+              </form>
+            )}
           </motion.div>
         </section>
 
@@ -218,19 +187,19 @@ export function TickpostLoginScreen() {
                 <div className="mb-6 flex items-center justify-between">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#38C3DB]">
-                      Fluxo TickPost
+                      Segurança TickPost
                     </p>
                     <h2 className="mt-2 text-2xl font-semibold tracking-[-0.04em]">
-                      Conteúdo vira pipeline
+                      Proteção para sua central
                     </h2>
                   </div>
-                  <span className="rounded-full border border-black/10 bg-black/[0.04] px-3 py-1 text-xs text-black/60 dark:border-white/10 dark:bg-black/20 dark:text-white/60">
-                    ao vivo
+                  <span className="grid size-10 place-items-center rounded-xl bg-[#3240AA] text-white">
+                    <ShieldCheck className="size-5" />
                   </span>
                 </div>
 
                 <div className="space-y-3">
-                  {rightCards.map((item, index) => (
+                  {securityCards.map((item, index) => (
                     <motion.div
                       key={item}
                       initial={{ opacity: 0, x: 18 }}
@@ -239,8 +208,8 @@ export function TickpostLoginScreen() {
                       className="flex items-center justify-between rounded-2xl border border-black/8 bg-white/78 p-4 dark:border-white/10 dark:bg-black/24"
                     >
                       <span className="flex items-center gap-3">
-                        <span className="grid size-8 place-items-center rounded-lg bg-[#3240AA] text-xs font-semibold text-white">
-                          {index + 1}
+                        <span className="grid size-9 place-items-center rounded-xl bg-[#FF6842] text-white">
+                          <KeyRound className="size-4" />
                         </span>
                         <span className="font-medium">{item}</span>
                       </span>
@@ -254,5 +223,27 @@ export function TickpostLoginScreen() {
         </section>
       </div>
     </main>
+  );
+}
+
+function Field({
+  label,
+  htmlFor,
+  error,
+  children,
+}: {
+  label: string;
+  htmlFor: string;
+  error?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="space-y-2">
+      <label htmlFor={htmlFor} className="text-sm font-medium text-black/80 dark:text-white/80">
+        {label}
+      </label>
+      <div className="relative">{children}</div>
+      {error ? <p className="text-xs text-[#c15a3d] dark:text-[#FFB3A0]">{error}</p> : null}
+    </div>
   );
 }
