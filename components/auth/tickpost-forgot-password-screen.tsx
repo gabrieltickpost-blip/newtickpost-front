@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useMemo, useState } from "react";
 
+import { TickpostLogo } from "@/components/brand/tickpost-logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -79,13 +80,7 @@ export function TickpostForgotPasswordScreen() {
             className="w-full max-w-[440px]"
           >
             <Link href="/campanhas" className="inline-flex items-center gap-3">
-              <span className="grid size-10 place-items-center rounded-xl bg-[#FF6842] text-base font-semibold text-white">
-                T
-              </span>
-              <span>
-                <span className="block text-sm font-semibold">tickpost</span>
-                <span className="block text-xs text-black/50 dark:text-white/50">Marketing</span>
-              </span>
+              <TickpostLogo className="h-11" />
             </Link>
 
             <div className="mt-12 space-y-3">

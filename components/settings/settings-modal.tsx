@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { TickpostLogo } from "@/components/brand/tickpost-logo";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -107,9 +108,7 @@ export function SettingsModal() {
 
             <div className="border-t border-black/8 pt-4 dark:border-white/10">
               <div className="flex items-center gap-3">
-                <Avatar>
-                  <AvatarFallback className="bg-[#FF6842] text-white">T</AvatarFallback>
-                </Avatar>
+                <TickpostLogo className="h-7 max-w-[132px]" />
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold">Tickpost Empresa</p>
                   <p className="truncate text-xs text-black/45 dark:text-white/42">

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ChevronDown, HelpCircle, Plus, Search, Settings } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { TickpostLogo } from "@/components/brand/tickpost-logo";
 import { currentWorkspaceUser, hasPermission } from "@/lib/auth/permissions";
 import { appModules } from "@/lib/navigation";
 import { Button } from "@/components/ui/button";
@@ -44,17 +45,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         <div className="flex items-center justify-between gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger className="flex w-full items-center gap-2 outline-none">
-              <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-primary text-base font-semibold text-primary-foreground">
-                T
-              </span>
-              <div className="min-w-0 text-left">
-                <div className="truncate text-sm font-semibold tracking-[-0.01em]">
-                  Tickpost
-                </div>
-                <div className="truncate text-xs font-medium text-muted-foreground">
-                  Marketing
-                </div>
-              </div>
+              <TickpostLogo className="h-7 max-w-[132px]" />
               <ChevronDown className="ml-auto size-3 text-muted-foreground" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-60">
